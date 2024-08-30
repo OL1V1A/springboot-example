@@ -5,6 +5,7 @@ import com.lwj.springbootexample.base.Result;
 import com.lwj.springbootexample.model.User;
 import com.lwj.springbootexample.msg.PulsarMsg;
 import com.lwj.springbootexample.pulsar.producer.BaseProducer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 public class PulsarController {
 
     @Resource
+    @Qualifier("topicProducer")
     BaseProducer producer;
 
     @GetMapping("sendMsg")

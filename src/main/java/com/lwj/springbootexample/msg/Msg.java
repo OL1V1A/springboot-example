@@ -8,12 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * 基础消息对象
- * 
- * @author 杜群
- *
- */
 @Setter
 @Getter
 @ToString
