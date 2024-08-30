@@ -1,6 +1,5 @@
 package com.lwj.springbootexample.pulsar.consumer;
 
-import com.lwj.springbootexample.pulsar.BaseConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.springframework.stereotype.Component;

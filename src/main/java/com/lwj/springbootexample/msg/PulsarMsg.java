@@ -1,7 +1,5 @@
 package com.lwj.springbootexample.msg;
 
-import com.alibaba.fastjson.JSONObject;
-import com.lwj.springbootexample.pulsar.Msg;
 import lombok.Data;
 
 @Data

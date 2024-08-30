@@ -7,7 +7,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: ${SPRING.APPLICATION.NAME:springboot-example}
+    name: springboot-example
   messages:
     encoding: utf-8
     basename: i18n/messages
@@ -20,3 +20,11 @@ spring:
       enabled: true
   main:
     allow-bean-definition-overriding: true
+
+
+#日志配置
+logging:
+  config: classpath:logback-config.xml
+  file:
+    path: ./logs/${spring.application.name}
+    name: ${spring.application.name}.log

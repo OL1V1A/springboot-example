@@ -1,4 +1,4 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.pulsar.producer;
 
 import com.lwj.springbootexample.serialize.HessianSerializer;
 import com.lwj.springbootexample.serialize.Serializer;

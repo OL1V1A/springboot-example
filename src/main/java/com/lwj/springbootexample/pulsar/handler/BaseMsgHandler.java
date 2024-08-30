@@ -1,5 +1,6 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.pulsar.handler;
 
+import com.lwj.springbootexample.msg.Msg;
 import com.lwj.springbootexample.serialize.Serializer;
 
 import java.io.IOException;

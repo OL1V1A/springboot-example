@@ -1,7 +1,7 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.pulsar.handler;
 
-import com.google.common.collect.Maps;
 import com.lwj.springbootexample.msg.PulsarMsg;
+import com.lwj.springbootexample.pulsar.consumer.BaseConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class  InBoundMsgHandler extends BaseMsgHandler<PulsarMsg>{
+public class  InBoundMsgHandler extends BaseMsgHandler<PulsarMsg> {
 
 
     /**

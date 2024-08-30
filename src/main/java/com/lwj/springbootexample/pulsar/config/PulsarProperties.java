@@ -1,4 +1,4 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.pulsar.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,4 +1,4 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.msg;
 
 import java.io.Serializable;
 import java.util.UUID;

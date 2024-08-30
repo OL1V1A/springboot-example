@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!--需要使用springProperty,才可使用application.properties（或application.yml）中的值-->
+<!--    <springProperty name="app.name" source="spring.application.name"/>-->
+    <!--应用日志的路径-->
+<!--    <springProperty name="log.path" source="logging.file.path" />-->
+<!--    <springProperty name="log.name" source="logging.file.name" />-->
+    <springProperty  name="app.name" source="spring.application.name"/>
+    <!-- 日志文件路径 -->
+    <springProperty  name="log.path" source="logging.file.path"/>
+    <springProperty  name="log.name" source="logging.file.name"/>
+    <!-- 日志存放路径  logs/job 设置为相对项目目录-->
+<!--    <property name="log.path" value="logs" />-->
+    <!-- 日志输出格式 时间 线程 日志级别 类 方法 对应的行数 输出信息 这样设置后输出格式如下 -->
+    <!-- 15:09:27.204 [http-nio-8080-exec-10] DEBUG c.e.s.l.TestLog - [getVersion,26] - debug详细信息 -->
+    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />
+
+    <contextName>${app.name}</contextName>
+
+    <!-- 控制台输出 appender  -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 日志内容输出格式设置为定义好的 log.pattern-->
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 系统日志输出 appender  class 中的log.pattern 表示日志滚动输出 -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志首次输出的文件地址  -->
+        <file>${log.path}/${log.name}</file>
+        <!-- 滚动输出策略：基于时间创建日志文件 ，这样第二天输出的日志，就会按照 fileNamePattern 新建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${log.path}/${log.name}.%d{yyyy-MM-dd}.%i</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>30MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 日志最大的历史 10天 -->
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志内容输出格式设置为定义好的 log.pattern-->
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <!-- 日志内容输出过滤器 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>INFO</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 系统模块日志级别控制 name 设置为你自己的项目根路径 如com.example.logback-->
+    <!-- level 设置日志输出的级别为debug 这样系统在进行日志输出时 只要级别在 debug  之后都可以打印 -->
+    <!-- 日志输出级别 trace< debug < info< warn < error  -->
+    <logger name="com.example.logback" level="debug" />
+    <!-- Spring日志级别控制-->
+    <logger name="org.springframework" level="warn" />
+
+    <!--系统操作日志 root 根路径的日志级别 info -->
+    <springProfile name="dev">
+        <root level="info">
+            <!-- console 控制台输出  -->
+            <appender-ref ref="console" />
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <root level="info">
+            <!-- console 控制台输出  -->
+            <appender-ref ref="console" />
+            <!-- console info级别输出  -->
+            <appender-ref ref="file" />
+        </root>
+    </springProfile>
+<!--    <root level="info">-->
+<!--        &lt;!&ndash; 将定义好的几个日志输出 追加到 root 上 &ndash;&gt;-->
+<!--        &lt;!&ndash; console 控制台输出  &ndash;&gt;-->
+<!--        <appender-ref ref="console" />-->
+<!--        &lt;!&ndash; console info级别输出  &ndash;&gt;-->
+<!--        <appender-ref ref="file" />-->
+<!--    </root>-->
+</configuration>
+

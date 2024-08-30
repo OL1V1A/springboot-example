@@ -1,4 +1,4 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.pulsar.config;
 
 import lombok.SneakyThrows;
 import org.apache.pulsar.client.api.PulsarClient;

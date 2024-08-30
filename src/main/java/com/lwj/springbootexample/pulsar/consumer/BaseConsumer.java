@@ -1,5 +1,6 @@
-package com.lwj.springbootexample.pulsar;
+package com.lwj.springbootexample.pulsar.consumer;
 
+import com.lwj.springbootexample.pulsar.handler.InBoundMsgHandler;
 import com.lwj.springbootexample.serialize.HessianSerializer;
 import com.lwj.springbootexample.serialize.Serializer;
 import lombok.extern.slf4j.Slf4j;
