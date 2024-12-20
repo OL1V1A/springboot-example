@@ -6,7 +6,6 @@ import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.apache.pulsar.client.api.TypedMessageBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -14,16 +13,25 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @ConditionalOnBean(PulsarClient.class)
-public class TopicProducer<T> extends BaseProducer<PulsarMsg<T>>{
+public class DelayProducer<T> extends BaseProducer<PulsarMsg<T>>{
 
-    public TopicProducer(PulsarClient pulsarClient) {
+    public DelayProducer(PulsarClient pulsarClient) {
         super(pulsarClient);
     }
 
     public void sendMessage(PulsarMsg<T> message){
         try {
+            TypedMessageBuilder<byte[]> typedMessageBuilder;
+            if (message.isDelayType()){
+                typedMessageBuilder = producer.newMessage().value(serializer.serialize(message))
+                        .deliverAt(message.getDelayTime());
+
+            }else{
+                typedMessageBuilder = producer.newMessage().value(serializer.serialize(message))
+                        .deliverAfter(message.getDelayTime(), message.getTimeUnit());
+            }
+            typedMessageBuilder.send();
             log.info("send message success :{}",message);
-            producer.send(serializer.serialize(message));
         } catch (Exception e) {
             log.error("send message error :", e);
             throw new RuntimeException(e);

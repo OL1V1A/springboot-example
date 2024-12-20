@@ -2,18 +2,13 @@ package com.lwj.springbootexample.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lwj.springbootexample.base.Result;
-import com.lwj.springbootexample.config.LoginAuthInterceptor;
 import com.lwj.springbootexample.mapper.SysUserMapper;
 import com.lwj.springbootexample.model.SysUser;
 import com.lwj.springbootexample.service.UserService;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.UUID;

@@ -16,7 +16,7 @@ public class  InBoundMsgHandler extends BaseMsgHandler<PulsarMsg> {
     /**
      * 消费者注册
      */
-    private Map<Integer, BaseConsumer> consumers = new HashMap<>();
+    private final Map<Integer, BaseConsumer> consumers = new HashMap<>();
 
     @Override
     public boolean process(PulsarMsg msgObj) {

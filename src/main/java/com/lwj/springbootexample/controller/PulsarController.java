@@ -6,6 +6,7 @@ import com.lwj.springbootexample.model.User;
 import com.lwj.springbootexample.msg.PulsarMsg;
 import com.lwj.springbootexample.pulsar.producer.BaseProducer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,12 +20,25 @@ public class PulsarController {
 
     @Resource
     @Qualifier("topicProducer")
+    @Lazy
     BaseProducer producer;
+
+    @Resource
+    @Qualifier("delayProducer")
+    @Lazy
+    BaseProducer delayProducer;
 
     @GetMapping("sendMsg")
     public Result<String> sendMsg(@RequestParam("msg") String msg) {
         PulsarMsg<String> msgObj = new PulsarMsg<>(1,msg);
         producer.sendMessage(msgObj);
+        return Result.success();
+    }
+
+    @GetMapping("sendDelayMsg")
+    public Result<String> sendDelayMsg(@RequestParam("msg") String msg) {
+        PulsarMsg<String> msgObj = new PulsarMsg<>(1,msg,System.currentTimeMillis() + 5000,true);
+        delayProducer.sendMessage(msgObj);
         return Result.success();
     }
 

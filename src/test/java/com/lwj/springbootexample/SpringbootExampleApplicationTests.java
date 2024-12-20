@@ -29,7 +29,7 @@ class SpringbootExampleApplicationTests {
     @Test
     @Transactional
     public void testStu() {
-//
+
 //        Stu stu = stuMapper.get(where -> {
 //            where.eq(Stu::getId, 1);
 //        });

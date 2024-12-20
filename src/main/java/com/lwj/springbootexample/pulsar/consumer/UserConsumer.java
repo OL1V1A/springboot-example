@@ -3,10 +3,12 @@ package com.lwj.springbootexample.pulsar.consumer;
 import com.lwj.springbootexample.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.PulsarClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@ConditionalOnBean(PulsarClient.class)
 public class UserConsumer extends BaseConsumer<User> {
 
 

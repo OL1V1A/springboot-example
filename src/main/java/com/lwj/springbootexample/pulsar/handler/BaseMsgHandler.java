@@ -11,7 +11,7 @@ public abstract class BaseMsgHandler<T extends Msg> {
     public abstract boolean process(T msg);
 
     public final boolean process(byte[] bytes, Serializer serializer) {
-        T obj = null;
+        T obj;
         try {
             obj = serializer.deserialize(bytes, getMsgClass());
         } catch (IOException e) {

@@ -35,6 +35,8 @@ public class LoginAuthInterceptor implements HandlerInterceptor {
 
     private static final String AUTHORIZATION = "Authorization";
 
+    private static final String USER_TYPE = "userType";
+
 
     public static String getUserNickName(){
         return X_TOKEN_USER.get() == null ? null : X_TOKEN_USER.get().getString("nickname");
@@ -76,6 +78,10 @@ public class LoginAuthInterceptor implements HandlerInterceptor {
 
     private boolean isAuthMethod(HttpServletRequest request, Object handler, JSONObject user) {
         if (!(handler instanceof HandlerMethod)) return false;
+        if (Objects.equals(1, user.getInteger(USER_TYPE))){
+            //管理员，直接放行
+            return true;
+        }
         Auth classAuth = AnnotationUtils.findAnnotation(((HandlerMethod) handler).getBeanType(), Auth.class);
         if (Objects.isNull(classAuth)) return true;
         Auth methodAuth = ((HandlerMethod) handler).getMethodAnnotation(Auth.class);

@@ -3,17 +3,15 @@ package com.lwj.springbootexample.pulsar.producer;
 import com.lwj.springbootexample.serialize.HessianSerializer;
 import com.lwj.springbootexample.serialize.Serializer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pulsar.client.api.Producer;
-import org.apache.pulsar.client.api.ProducerAccessMode;
-import org.apache.pulsar.client.api.PulsarClient;
-import org.apache.pulsar.client.api.PulsarClientException;
+import org.apache.pulsar.client.api.*;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Component
-public abstract class BaseProducer {
+public  abstract class BaseProducer<PulsarMsg> {
     protected final PulsarClient pulsarClient;
 
     protected Producer<byte[]> producer;
@@ -26,26 +24,20 @@ public abstract class BaseProducer {
         initProducer();
     }
 
-    protected abstract void initProducer();
-
-//    private void initProducer() {
-//        try {
-//            producer = pulsarClient.newProducer()
-//                    .topic(getTopic())
-//                    .create();
-//        } catch (PulsarClientException e) {
-//            log.error("init producer error :", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
-    public void sendMessage(Object message){
+    protected void initProducer() {
         try {
-            producer.send(serializer.serialize(message));
-        } catch (Exception e) {
-            log.error("send message error :", e);
+            producer = pulsarClient.newProducer()
+                    .topic(getTopic())
+                    .producerName(getClass().getSimpleName())
+                    .create();
+        } catch (PulsarClientException e) {
+            log.error("init producer error :", e);
             throw new RuntimeException(e);
         }
     }
+
+    public abstract void sendMessage(PulsarMsg message);
+
 
     protected abstract String getTopic();
 

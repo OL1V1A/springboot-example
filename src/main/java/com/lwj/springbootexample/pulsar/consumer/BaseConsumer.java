@@ -5,23 +5,25 @@ import com.lwj.springbootexample.serialize.HessianSerializer;
 import com.lwj.springbootexample.serialize.Serializer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 @Slf4j
-@Component
 public abstract class BaseConsumer<T> {
 
-    private final PulsarClient pulsarClient;
+    protected PulsarClient pulsarClient;
 
-    private Consumer<T> consumer;
+    protected Consumer<T> consumer;
 
-    private final Serializer serializer;
+    private Serializer serializer;
 
     @Resource
     InBoundMsgHandler inBoundMsgHandler;
+
 
     public BaseConsumer(PulsarClient pulsarClient) {
         this.pulsarClient = pulsarClient;
@@ -30,16 +32,24 @@ public abstract class BaseConsumer<T> {
 
     @PostConstruct
     public void init() {
+        registerConsumer();
+        initConsumer();
+        startConsumer();
+    }
+
+    protected void registerConsumer() {
         inBoundMsgHandler.registerConsumer(getMsgType(), this);
+    }
+    protected void initConsumer(){
         try {
             consumer = (Consumer<T>) pulsarClient.newConsumer()
                     .topic(getTopic())
                     .subscriptionName(getSubscribe())
                     .subscriptionType(SubscriptionType.Shared)
                     .subscribe();
-            startConsumer();
+            log.info("init {} consumer success :", getClass().getSimpleName());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("init {} consumer error : {}", getClass().getSimpleName(),e);
         }
     }
 
